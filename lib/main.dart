@@ -11,11 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "体温トラッカー",
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.lightGreen
         ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.lightGreen,
+        ),
+        
       ),
       home: HomePage(),
     );
