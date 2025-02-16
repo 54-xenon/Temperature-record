@@ -8,6 +8,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("体温を記録"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
