@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:temperaurerecordapp/pages/history_page.dart';
+import 'package:temperaurerecordapp/pages/settings_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,11 +13,16 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.history),
-            onPressed: () {},
+            onPressed: () {
+              // 履歴のページに飛ぶ
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryPage()));
+            },
           ),
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
           ),
         ],
       ),

@@ -15,3 +15,4 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 # Temperature-record
+体温を記録できる簡単なアプリです。コロナ明けで完全に意味のないアプリだけど、個人開発による技術力向上のために開発しています。インフルエンザが流行る時期などで、ある程度の需要はあるのではないかと考えています。
