@@ -9,6 +9,9 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("設定"),
       ),
+      body: Center(
+        child: Text("作成途中"),
+      ),
     );
   }
 }
