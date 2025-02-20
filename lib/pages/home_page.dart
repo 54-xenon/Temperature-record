@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:temperaurerecordapp/component/floating_page.dart';
 import 'package:temperaurerecordapp/pages/history_page.dart';
