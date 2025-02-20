@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.lightGreen,
         ),
-        
       ),
       home: HomePage(),
     );

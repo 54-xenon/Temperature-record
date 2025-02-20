@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("体温を記録"),
+        elevation: 0,
         actions: [
           IconButton(
             icon: Icon(Icons.history),
@@ -34,27 +35,51 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               // さっき入力した値が表示される
-              SizedBox(height: 100),
-              Text("今日の体温"),
-              Text("--.-"  "℃"),
+              SizedBox(height: 20),
+              Text(
+                "今日の体温",
+                style: TextStyle(
+                  fontSize: 20
+                ),
+              ),
+              SizedBox(height: 15),
+              Text(
+                "--.-"  "℃",
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        elevation: 0,
         onPressed: () async {
           // ここにshowMModealBottomSheetを表示さいたい動作のコールバックに誠意等を記述していく
           await showModalBottomSheet<void> (
             context: context,
             isScrollControlled: true,
             enableDrag: true,
-            barrierColor: Colors.black.withValues(alpha: 0.5),
+            // ModelBottomSheetの下にあるbodyに対してのぼかし
+            barrierColor: Colors.black.withValues(alpha: 0.2), 
+            elevation: 1,
             builder: (context) {
-              return BottomSheetAction();
+              return DraggableScrollableSheet(
+                initialChildSize: 0.5, //初期の高さ(50%)
+                minChildSize: 0.3, //最初の高さ(30%)
+                maxChildSize: 1.0, //最大の高さ(100%)
+                expand: false,
+                builder: (context, scrollController) {
+                  return BottomSheetAction();
+                },
+              );
             }
           );
         },
+        // childはwidgetの最後に記述しないと怒られる
+        child: Icon(Icons.add),
       ),
     );
   }
