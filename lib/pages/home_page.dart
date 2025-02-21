@@ -3,9 +3,14 @@ import 'package:temperaurerecordapp/component/floating_page.dart';
 import 'package:temperaurerecordapp/pages/history_page.dart';
 import 'package:temperaurerecordapp/pages/settings_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +71,7 @@ class HomePage extends StatelessWidget {
             elevation: 1,
             builder: (context) {
               return DraggableScrollableSheet(
-                initialChildSize: 0.5, //初期の高さ(50%)
+                initialChildSize: 0.7, //初期の高さ(50%)
                 minChildSize: 0.3, //最初の高さ(30%)
                 maxChildSize: 1.0, //最大の高さ(100%)
                 expand: false,
