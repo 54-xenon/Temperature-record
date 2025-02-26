@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // floatingactionbuttonがクリックされたときに、表示して体温を入力する
-class BottomSheetAction extends StatelessWidget {
+class BottomSheetAction extends StatefulWidget {
   const BottomSheetAction({super.key});
 
+  @override
+  State<BottomSheetAction> createState() => _BottomSheetActionState();
+}
+
+class _BottomSheetActionState extends State<BottomSheetAction> {
+  //
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,9 +30,14 @@ class BottomSheetAction extends StatelessWidget {
             children: [
               Text("体温を入力してください"),
               TextField(
+                controller: _controller,
+                // その画面を開くと自動的にキーボードが表示されて、入力できるようになる
+                autofocus: true,
                 // 数字のみを入力できるように設定する
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d*)?')),
+                ],
                 // 線でボックスを囲む
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -39,9 +51,21 @@ class BottomSheetAction extends StatelessWidget {
                   ElevatedButton(
                     child: Text("OK"),
                     onPressed: () {
-                      // TextFildの記入された時にDBに保存するメソッドを後で作る
+                      // 入力した数値をHibeのDBに保存する
+                      final text = _controller.text.trim();
+                      if (text.isNotEmpty) {
+                        final temp = double.tryParse(text);
+                        if (temp != null) {
+                          Navigator.pop(context, temp);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("体温を入力しください")),
+                          );
+                        }
+                      }
                     },
                   ),
+                  SizedBox(width: 8),
                   ElevatedButton(
                     child: Text("Cancel"),
                     onPressed: () {
@@ -50,7 +74,7 @@ class BottomSheetAction extends StatelessWidget {
                     },
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
