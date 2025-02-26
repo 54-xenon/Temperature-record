@@ -14,10 +14,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Box<TemperatureData> temperatureBox;
+  // 最新の体温データを取得
+  double? latesttemperature; 
   @override
   void initState() {
     super.initState();
     temperatureBox = Hive.box<TemperatureData>('temperatureBox');
+    _loadLastestTemperature();
+  }
+  // 最新の体温データを取得する
+  void _loadLastestTemperature() {
+    if (temperatureBox.isNotEmpty) {
+      final latestData = temperatureBox.getAt(temperatureBox.length - 1);
+      setState(() {
+        latesttemperature = latestData?.temperature;
+      });
+    }
   }
   // 今までonPressedの中にあったShoeModediaglgを関数に分ける
   void _shoeInputDialog() async {
@@ -51,9 +63,11 @@ class _HomePageState extends State<HomePage> {
     // Boxに新しいデータを保存する
     temperatureBox.add(newTemperature);
     // 画面を更新
-    setState(() {});
+    setState(() {
+      latesttemperature = temp;
+    });
   }
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +104,9 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 15),
               Text(
-                "--.-"  "℃",
+                latesttemperature !=  null
+                  ? "${latesttemperature!.toStringAsExponential(1)}℃"
+                  : "--/-℃",
                 style: TextStyle(
                   fontSize: 60,
                   fontWeight: FontWeight.bold,

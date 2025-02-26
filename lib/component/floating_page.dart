@@ -11,7 +11,7 @@ class BottomSheetAction extends StatefulWidget {
 
 class _BottomSheetActionState extends State<BottomSheetAction> {
   //
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,6 +30,7 @@ class _BottomSheetActionState extends State<BottomSheetAction> {
             children: [
               Text("体温を入力してください"),
               TextField(
+                controller: _controller,
                 // その画面を開くと自動的にキーボードが表示されて、入力できるようになる
                 autofocus: true,
                 // 数字のみを入力できるように設定する
@@ -50,17 +51,17 @@ class _BottomSheetActionState extends State<BottomSheetAction> {
                   ElevatedButton(
                     child: Text("OK"),
                     onPressed: () {
-                      // TextFildから数字を取得する
-                      double? temperature = double.tryParse(_controller.text);
-                      // 取得した値をhomepageに返す
-                      if (temperature != null) {
-                        // 戻り値を返す
-                        Navigator.pop(context, temperature);
-                      } else {
-                        // 入力が無効な場合のエラーハンドリング
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("無効な入力です")),
-                        );
+                      // 入力した数値をHibeのDBに保存する
+                      final text = _controller.text.trim();
+                      if (text.isNotEmpty) {
+                        final temp = double.tryParse(text);
+                        if (temp != null) {
+                          Navigator.pop(context, temp);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("体温を入力しください")),
+                          );
+                        }
                       }
                     },
                   ),
