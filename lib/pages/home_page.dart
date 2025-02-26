@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:temperaurerecordapp/component/floating_page.dart';
+import 'package:temperaurerecordapp/model/temperature_data.dart';
 import 'package:temperaurerecordapp/pages/history_page.dart';
 import 'package:temperaurerecordapp/pages/settings_page.dart';
 
@@ -11,7 +13,47 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Box<TemperatureData> temperatureBox;
   @override
+  void initState() {
+    super.initState();
+    temperatureBox = Hive.box<TemperatureData>('temperatureBox');
+  }
+  // 今までonPressedの中にあったShoeModediaglgを関数に分ける
+  void _shoeInputDialog() async {
+    double? temperature = await showModalBottomSheet<double>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      // 背景のブラーで、witthopacitiyはバージョンアップで非推奨になった
+      barrierColor: Colors.black.withValues(alpha: 0.2),
+      elevation: 1,
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.7, // 最初の高さ
+          minChildSize: 0.3, // 最大の高さ
+          maxChildSize: 1.0, // 最小の高さ
+          expand: false,
+          builder: (context, scrollController) {
+            return BottomSheetAction(); // TextFildとかの画面を表示する
+          },
+        );
+      },
+    );
+    if (temperature != null) {
+      _addTemperature(temperature);
+    }
+  }
+  // 温度データを’Hibeに保存する
+  void _addTemperature(double temp) {
+    // データを取得して変数に記録(日付と体温)
+    final newTemperature = TemperatureData(DateTime.now(), temp);
+    // Boxに新しいデータを保存する
+    temperatureBox.add(newTemperature);
+    // 画面を更新
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -60,28 +102,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
-        onPressed: () async {
-          // ここにshowMModealBottomSheetを表示さいたい動作のコールバックに誠意等を記述していく
-          await showModalBottomSheet<void> (
-            context: context,
-            isScrollControlled: true,
-            enableDrag: true,
-            // ModelBottomSheetの下にあるbodyに対してのぼかし
-            barrierColor: Colors.black.withValues(alpha: 0.2), 
-            elevation: 1,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                initialChildSize: 0.7, //初期の高さ(50%)
-                minChildSize: 0.3, //最初の高さ(30%)
-                maxChildSize: 1.0, //最大の高さ(100%)
-                expand: false,
-                builder: (context, scrollController) {
-                  return BottomSheetAction();
-                },
-              );
-            }
-          );
-        },
+        // BottomSheetの表示をコールバック
+        onPressed: _shoeInputDialog,
         // childはwidgetの最後に記述しないと怒られる
         child: Icon(Icons.add),
       ),

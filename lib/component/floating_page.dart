@@ -56,6 +56,11 @@ class _BottomSheetActionState extends State<BottomSheetAction> {
                       if (temperature != null) {
                         // 戻り値を返す
                         Navigator.pop(context, temperature);
+                      } else {
+                        // 入力が無効な場合のエラーハンドリング
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("無効な入力です")),
+                        );
                       }
                     },
                   ),
