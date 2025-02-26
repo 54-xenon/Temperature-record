@@ -67,6 +67,25 @@ class _HomePageState extends State<HomePage> {
       latesttemperature = temp;
     });
   }
+
+  // データの削除
+  void _deleteTemperature(int index) {
+    temperatureBox.deleteAt(index);
+    // 最新のデータを更新
+    _loadLastestTemperature();
+    // 画面を更新
+    setState(() {});
+  }
+
+  // 全てのデータを削除する
+  void _deleteOllDate() {
+    setState(() {
+      // 全てのデータを削除スリ
+      temperatureBox.clear();
+      _loadLastestTemperature();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +131,11 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                child: Icon(Icons.delete),
+                onPressed: () => _deleteOllDate(),
+              )
             ],
           ),
         ),

@@ -10,7 +10,12 @@ class SettingsPage extends StatelessWidget {
         title: const Text("設定"),
       ),
       body: Center(
-        child: Text("作成途中"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("準備中"),
+          ],
+        ),
       ),
     );
   }
